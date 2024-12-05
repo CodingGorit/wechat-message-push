@@ -34,8 +34,26 @@ def get_weather(city):
 
 
 # 当前城市、日期
-def get_city_date(city):
-    return city, today.date().strftime("%Y-%m-%d")
+def get_city_date(city: str):
+    """
+    获取城市的当前日期。
+
+    参数:
+    city (str): 城市名称。
+
+    返回:
+    tuple: (城市名称, 当前日期字符串)。
+    """
+    if not isinstance(city, str):
+        raise TypeError("city must be a string")
+    
+    try:
+        # 使用 datetime.date.today() 获取当前日期
+        date_str = today.strftime("%Y-%m-%d")
+    except Exception as e:
+        raise RuntimeError(f"Error formatting date: {e}")
+    
+    return city, date_str
 
 
 # 距离设置的日期过了多少天
