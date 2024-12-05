@@ -63,14 +63,25 @@ def get_count(start_date):
 
 
 # 距离发工资还有多少天
-def get_solary(solary):
-    next = datetime.strptime(str(date.today().year) + "-" + str(date.today().month) + "-" + solary, "%Y-%m-%d")
-    if next < datetime.now():
-        if next.month == 12:
-            next = next.replace(year=next.year + 1)
-        next = next.replace(month=(next.month + 1) % 12)
-    return (next - today).days
-
+def get_solary(solary_day):
+    try:
+        # 获取当前年份和月份
+        current_year = today.year
+        current_month = today.month
+        
+        # 构建下一次发薪日的日期
+        next_solary = date(current_year, current_month, int(solary_day))
+        
+        # 如果下一次发薪日已经过去，则跳到下一个月
+        if next_solary < today:
+            if current_month == 12:
+                next_solary = date(current_year + 1, 1, int(solary_day))
+            else:
+                next_solary = date(current_year, current_month + 1, int(solary_day))
+        
+        return (next_solary - today).days
+    except ValueError as e:
+        raise ValueError(f"Invalid date format for solary day {solary_day}: {e}")
 
 # 距离过生日还有多少天
 def get_birthday(birthday):
